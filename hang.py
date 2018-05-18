@@ -25,12 +25,16 @@ def logSys(log, message):
     elif log == 'info':
         logger.info(message)
     
-    elif log == 'warnnig':
+    elif log == 'warnning':
         logger.warn(message)
     
     else:
         logger.error(message)
 
+def validSecretWord(secretWord):
+    if secretWord.__class__ is not str:
+        logSys('debug','Secret Word não é uma string')
+        sys.exit()
 
 def loadWords():
     """
@@ -62,9 +66,7 @@ def isWordGuessed(secretWord, lettersGuessed):
 
 
 def countLetters(secretWord):
-    if secretWord.__class__ is not str:
-        logSys('debug','Secret Word não é uma string')
-
+    validSecretWord(secretWord)
     letters = []
 
     for letter in secretWord:
@@ -82,11 +84,11 @@ def validateWord(secretWord, guesses):
         print 'There are', uniqueLetters, 'unique letters in this word.'
         
         if guesses < uniqueLetters:
-            print 'Secret word have too many unique letters, reloading'
+            logSys('info','Secret word have too many unique letters, reloading')
             secretWord = loadWords()
             tries += 1
             if tries >= maxTries:
-                print 'Max of tries, exiting program'
+                logSys('error','Max of tries, exiting program')
                 return None
         else:
             validatedWord = True
@@ -110,8 +112,8 @@ def guessLetter(lettersGuessed):
 
     print 'Available letters', available
 
-def hangman(secretWord):
-    
+def hangman(secretWord):   
+
     guesses = 3
     
     secretWord = validateWord(secretWord, guesses)
@@ -148,8 +150,9 @@ def hangman(secretWord):
             guesses -=1
             lettersGuessed.append(letter)
             guessed = fillGuesses(secretWord, lettersGuessed)
-
-            print 'Oops! That letter is not in my word: ',  guessed
+            
+            logSys('warnning', 'Oops! That letter is not in my word')
+            print guessed
         print '------------'
 
     else:
