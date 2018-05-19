@@ -47,6 +47,7 @@ def loadWords():
     logSys('info','Arquivo aberto com sucesso!')
     # line: string
     line = inFile.readline()
+    logSys('info','Leitura de palavras feita!')
     # wordlist: list of strings
     wordlist = string.split(line)
     print "  ", len(wordlist), "words loaded."
@@ -118,6 +119,7 @@ def hangman(secretWord):
     
     secretWord = validateWord(secretWord, guesses)
     if secretWord == None:
+        logSys('error','SecretWord não é uma palavra valida')
         return
 
     lettersGuessed = []
@@ -151,9 +153,9 @@ def hangman(secretWord):
             lettersGuessed.append(letter)
             guessed = fillGuesses(secretWord, lettersGuessed)
             
-            logSys('warnning', 'Oops! That letter is not in my word')
+            print 'Oops! That letter is not in my word'
             print guessed
-        print '------------'
+            print '------------'
 
     else:
         if isWordGuessed(secretWord, lettersGuessed) == True:
@@ -166,3 +168,4 @@ def hangman(secretWord):
 
 secretWord = loadWords().lower()
 hangman(secretWord)
+
